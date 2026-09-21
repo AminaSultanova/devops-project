@@ -1,1 +1,22 @@
-name: CI
+name: DevOps CI Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Check repository structure
+        run: |
+          echo "Validating project structure..."
+          test -f terraform/main.tf && echo "Terraform OK"
+          test -f docker/Dockerfile && echo "Docker OK"
+          test -f kubernetes/deployment.yaml && echo "Kubernetes OK"
+          test -f monitoring/prometheus.yml && echo "Monitoring OK"
